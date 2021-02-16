@@ -13,9 +13,8 @@ def update_screen():
 def draw_snake(screen, snake, SIZE):
     [pygame.draw.rect(screen, pygame.Color('white'), (i, j, SIZE - 1, SIZE - 1)) for i, j in snake]
 
-def draw_apple(screen, apple, SIZE):
-    print(screen, apple, SIZE)
-    pygame.draw.rect(screen, pygame.Color('red'), (50, 50, SIZE, SIZE))
+def draw_apple(screen, applex, appley, SIZE):
+    pygame.draw.rect(screen, pygame.Color('red'), (applex, appley, SIZE, SIZE))
 
 def event_handler():
     for event in pygame.event.get():
@@ -41,12 +40,10 @@ def main():
     applex = random.randrange(SIZE, RES - SIZE, SIZE)
     appley = random.randrange(SIZE, RES - SIZE, SIZE)
 
-    apple = [(applex, appley)]
-
     while True:
         render_screen(screen)
         draw_snake(screen, snake, SIZE)
-        draw_apple(screen, apple, SIZE)
+        draw_apple(screen, applex, appley, SIZE)
         
         clock.tick(FPS)
         update_screen()
