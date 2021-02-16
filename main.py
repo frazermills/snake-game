@@ -13,11 +13,15 @@ def update_screen():
 def draw_snake(screen, snake, SIZE):
     [pygame.draw.rect(screen, pygame.Color('white'), (i, j, SIZE - 1, SIZE - 1)) for i, j in snake]
 
+def draw_apple(screen, apple, SIZE):
+    print(screen, apple, SIZE)
+    pygame.draw.rect(screen, pygame.Color('red'), (50, 50, SIZE, SIZE))
+
 def event_handler():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            quit()
+            quit()  
 
 def main(): 
     RES = 500
@@ -29,17 +33,25 @@ def main():
     screen = setup_screen(RES)
     clock = pygame.time.Clock()
 
-    x = random.randrange(SIZE, RES - SIZE, SIZE)
-    y = random.randrange(SIZE, RES - SIZE, SIZE)
+    snakex = random.randrange(SIZE, RES - SIZE, SIZE)
+    snakey = random.randrange(SIZE, RES - SIZE, SIZE)
 
-    snake = [(x, y)]
+    snake = [(snakex, snakey)]
+
+    applex = random.randrange(SIZE, RES - SIZE, SIZE)
+    appley = random.randrange(SIZE, RES - SIZE, SIZE)
+
+    apple = [(applex, appley)]
 
     while True:
         render_screen(screen)
         draw_snake(screen, snake, SIZE)
+        draw_apple(screen, apple, SIZE)
+        
         clock.tick(FPS)
         update_screen()
         event_handler()
+        
 
 if __name__ == "__main__":
     main()
