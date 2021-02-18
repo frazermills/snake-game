@@ -1,5 +1,6 @@
 import pygame
 from snake import Snake
+from food import Food
 
 def main():
     SIZE = WIDTH, HEIGHT = (800, 800)
@@ -12,6 +13,8 @@ def main():
     clock = pygame.time.Clock()
 
     snake = Snake(screen, WHITE)
+    apple = Food(screen, WHITE)
+    
 
     while True:
         for event in pygame.event.get():
@@ -35,6 +38,7 @@ def main():
         screen.fill(BLACK)
 
         snake.move(snake.direction)
+        apple.draw()
 
         pygame.display.update()
         clock.tick(fps)
