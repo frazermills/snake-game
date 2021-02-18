@@ -1,4 +1,4 @@
-import pygame
+import pygame, random
 from snake import Snake
 from food import Food
 
@@ -17,10 +17,20 @@ def main():
     RED = (255, 0, 0)
     fps = 25
     score = 0
-
+    
     pygame.init()
+    pygame.mixer.init()
+    
     screen = pygame.display.set_mode(SIZE)
     clock = pygame.time.Clock()
+
+    burp_1 = pygame.mixer.Sound("sounds/burp_1.wav")
+    burp_2 = pygame.mixer.Sound("sounds/burp_2.wav")
+    eat_food = pygame.mixer.Sound("sounds/eat_food.wav")
+    
+    music = pygame.mixer.music.load("sounds/Cyberpunk_Moonlight_Sonata.mp3")
+    pygame.mixer.music.play(-1)
+
 
     snake = Snake(screen, GREEN)
     apple = Food(screen, RED)
@@ -47,11 +57,19 @@ def main():
                 snake.direction = 'd'
 
         if apple.is_eaten(snake.x, snake.y, snake.size):
+            eat_food.play()
             apple.update_xy()
             snake.grow()
             score += 1
 
+            num = random.randrange(10)
+            if num == 9:
+                burp_1.play()
+            elif num == 1:
+                burp_2.play()
+
         if snake.x < 0 or snake.x > WIDTH or snake.y < 0 or snake.y > HEIGHT:
+            pygame.mixer.fadeout(100)
             end_game(score)
         
         screen.fill(BLACK)
