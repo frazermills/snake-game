@@ -40,6 +40,7 @@ def main():
 
         if apple.is_eaten(snake.x, snake.y, snake.size):
             apple.update_xy()
+            snake.grow()
         
         screen.fill(BLACK)
 

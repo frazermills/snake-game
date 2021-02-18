@@ -23,5 +23,7 @@ class Food:
 
     def is_eaten(self, snake_x, snake_y, snake_size):
         if set(range(snake_x, snake_x + snake_size + 1)) & self.set_x and set(range(snake_y, snake_y + snake_size + 1)) & self.set_y:
-            return True
-        return False
+            eaten = True
+        else:
+            eaten = False
+        return eaten

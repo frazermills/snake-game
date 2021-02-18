@@ -6,7 +6,7 @@ class Snake:
         self.surface = surface
         self.colour = colour
         self.size = 15
-        self.lenght = 10
+        self.lenght = 5
         self.vel = 15
         self.x = surface.get_width() // 4
         self.y = surface.get_height() // 2
@@ -32,3 +32,7 @@ class Snake:
         if key == 'd':
             self.y += self.vel
             self.update()
+
+    def grow(self):
+        self.size += 1
+        self.lenght += 1
