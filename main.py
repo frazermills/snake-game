@@ -2,6 +2,13 @@ import pygame
 from snake import Snake
 from food import Food
 
+def end_game(score):
+    pygame.quit()
+    print(f"your score was: {score}")
+    input("press enter to continue")
+    quit()
+
+
 def main():
     SIZE = WIDTH, HEIGHT = (800, 800)
     WHITE = (255, 255, 255)
@@ -9,6 +16,7 @@ def main():
     GREEN = (0, 255, 0)
     RED = (255, 0, 0)
     fps = 25
+    score = 0
 
     pygame.init()
     screen = pygame.display.set_mode(SIZE)
@@ -41,6 +49,10 @@ def main():
         if apple.is_eaten(snake.x, snake.y, snake.size):
             apple.update_xy()
             snake.grow()
+            score += 1
+
+        if snake.x < 0 or snake.x > WIDTH or snake.y < 0 or snake.y > HEIGHT:
+            end_game(score)
         
         screen.fill(BLACK)
 
