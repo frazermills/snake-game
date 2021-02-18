@@ -2,22 +2,22 @@ import pygame
 
 class Snake:
     
-    def __init__(self, surface, colour):
-        self.surface = surface
+    def __init__(self, screen, colour):
+        self.screen = screen
         self.colour = colour
         self.size = 15
         self.lenght = 5
         self.vel = 15
-        self.x = surface.get_width() // 4
-        self.y = surface.get_height() // 2
-        self.XY = [(self.x, self.y)]
+        self.x = screen.get_width() // 4
+        self.y = screen.get_height() // 2
+        self.xy = [(self.x, self.y)]
         self.direction = 'r'
 
     def update(self):
-        self.XY += [(self.x, self.y)]
-        self.XY = self.XY[-self.lenght:]
-        for kx, ky in self.XY:
-            pygame.draw.rect(self.surface, self.colour, (kx, ky, self.size, self.size))
+        self.xy += [(self.x, self.y)]
+        self.xy = self.xy[-self.lenght:]
+        for kx, ky in self.xy:
+            pygame.draw.rect(self.screen, self.colour, (kx, ky, self.size, self.size))
 
     def move(self, key):
         if key == 'l':
