@@ -37,6 +37,10 @@ def main():
         elif keys[pygame.K_s]:
             if snake.direction != 'u':
                 snake.direction = 'd'
+
+        if apple.is_eaten(snake.x, snake.y, snake.size):
+            apple.update_xy()
+        
         screen.fill(BLACK)
 
         snake.move(snake.direction)

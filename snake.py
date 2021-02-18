@@ -5,7 +5,7 @@ class Snake:
     def __init__(self, surface, colour):
         self.surface = surface
         self.colour = colour
-        self.side = 15
+        self.size = 15
         self.lenght = 10
         self.vel = 15
         self.x = surface.get_width() // 4
@@ -17,7 +17,7 @@ class Snake:
         self.XY += [(self.x, self.y)]
         self.XY = self.XY[-self.lenght:]
         for kx, ky in self.XY:
-            pygame.draw.rect(self.surface, self.colour, (kx, ky, self.side, self.side))
+            pygame.draw.rect(self.surface, self.colour, (kx, ky, self.size, self.size))
 
     def move(self, key):
         if key == 'l':
