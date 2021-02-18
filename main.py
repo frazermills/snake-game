@@ -6,14 +6,16 @@ def main():
     SIZE = WIDTH, HEIGHT = (800, 800)
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
+    GREEN = (0, 255, 0)
+    RED = (255, 0, 0)
     fps = 25
 
     pygame.init()
     screen = pygame.display.set_mode(SIZE)
     clock = pygame.time.Clock()
 
-    snake = Snake(screen, WHITE)
-    apple = Food(screen, WHITE)
+    snake = Snake(screen, GREEN)
+    apple = Food(screen, RED)
     
 
     while True:
