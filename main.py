@@ -1,55 +1,43 @@
-import pygame, random
+import pygame
+from snake import Snake
 
-def setup_screen(RES):
-    screen = pygame.display.set_mode([RES, RES])
-    return screen
-
-def render_screen(screen):
-    screen.fill(pygame.Color("black"))
-
-def update_screen():
-    pygame.display.flip()
-
-def draw_snake(screen, snake, SIZE):
-    [pygame.draw.rect(screen, pygame.Color('white'), (i, j, SIZE - 1, SIZE - 1)) for i, j in snake]
-
-def draw_apple(screen, applex, appley, SIZE):
-    pygame.draw.rect(screen, pygame.Color('red'), (applex, appley, SIZE, SIZE))
-
-def event_handler():
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()  
-
-def main(): 
-    RES = 500
-    SIZE = 25
-    FPS = 60
+def main():
+    SIZE = WIDTH, HEIGHT = (800, 800)
+    WHITE = (255, 255, 255)
+    BLACK = (0, 0, 0)
+    fps = 25
 
     pygame.init()
-
-    screen = setup_screen(RES)
+    screen = pygame.display.set_mode(SIZE)
     clock = pygame.time.Clock()
 
-    snakex = random.randrange(SIZE, RES - SIZE, SIZE)
-    snakey = random.randrange(SIZE, RES - SIZE, SIZE)
-
-    snake = [(snakex, snakey)]
-
-    applex = random.randrange(SIZE, RES - SIZE, SIZE)
-    appley = random.randrange(SIZE, RES - SIZE, SIZE)
+    snake = Snake(screen, WHITE)
 
     while True:
-        render_screen(screen)
-        draw_snake(screen, snake, SIZE)
-        draw_apple(screen, applex, appley, SIZE)
-        
-        clock.tick(FPS)
-        update_screen()
-        event_handler()
-        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a]:
+            if snake.direction != 'r':
+                snake.direction = 'l'
+        elif keys[pygame.K_d]:
+            if snake.direction != 'l':
+                snake.direction = 'r'
+        elif keys[pygame.K_w]:
+            if snake.direction != 'd':
+                snake.direction = 'u'
+        elif keys[pygame.K_s]:
+            if snake.direction != 'u':
+                snake.direction = 'd'
+        screen.fill(BLACK)
+
+        snake.move(snake.direction)
+
+        pygame.display.update()
+        clock.tick(fps)
 
 if __name__ == "__main__":
     main()
-
