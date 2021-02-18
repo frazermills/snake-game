@@ -5,9 +5,11 @@ from food import Food
 def end_game(score):
     pygame.quit()
     print(f"your score was: {score}")
-    input("press enter to continue")
-    quit()
-
+    play_again = input("would you like to play again? (y/n) ")
+    if play_again == "y":
+        main()
+    else:
+        quit()
 
 def main():
     SIZE = WIDTH, HEIGHT = (800, 800)
@@ -27,6 +29,7 @@ def main():
     burp_1 = pygame.mixer.Sound("sounds/burp_1.wav")
     burp_2 = pygame.mixer.Sound("sounds/burp_2.wav")
     eat_food = pygame.mixer.Sound("sounds/eat_food.wav")
+    game_over = pygame.mixer.Sound("sounds/game_over.wav")
     
     music = pygame.mixer.music.load("sounds/Cyberpunk_Moonlight_Sonata.mp3")
     pygame.mixer.music.play(-1)
