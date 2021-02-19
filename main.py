@@ -1,42 +1,31 @@
 import pygame, random
-import tkinter as tk
 from snake import Snake
 from food import Food
+from menus import StartMenu
 
-def menu_handler(mode, score):
-    size = 800
-    
-    if mode == "start_menu":
-        start_screen = tk.Tk()
-        start_screen.geometry(f"{size}x{size}")
-        start_screen.resizable(False, False)
-        start_screen.configure(background = "black")
-        
-        quit_button = tk.Button(start_screen, text="quit game", width=15, height=2, command=quit)
-        quit_button.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
-        start_button = tk.Button(start_screen, text="start game", width=15, height=2, command=start_screen.destroy)
-        start_button.place(relx=0.5, rely=0.3, anchor=tk.CENTER)
-        start_screen.mainloop()
+def menu_handler(screen, clock, text_font, colour, score):
+    start_menu = StartMenu(screen, clock, text_font, colour)
+    start_menu.setup()
+    while start_menu.option == None:
+        start_menu.update()
+        start_menu.is_clicked()
 
-    elif mode == "end_menu":
-        end_screen = tk.Tk()
-        end_screen.geometry(f"{size}x{size}")
-        end_screen.resizable(False, False)
-        end_screen.configure(background = "black")
-        
-        quit_button = tk.Button(end_screen, text="quit game", width=15, height=2, command=quit)
-        quit_button.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
-        
-        start_button = tk.Button(end_screen, text="try again", width=15, height=2, command=lambda:[end_screen.destroy(), main()])
-        start_button.place(relx=0.5, rely=0.3, anchor=tk.CENTER)
-        
-        score = tk.Label(end_screen, text=f"your score was {score}", width=15, height=2)
-        score.place(relx=0.5, rely=0.7, anchor=tk.CENTER)
-        end_screen.mainloop()        
+        if start_menu.option == "play game":
+            print("start game")
+            return
+        elif start_menu.option == "quit game":
+            print("quit game")
+            end_game(score)
 
 def end_game(score):
     pygame.quit()
-    menu_handler("end_menu", score)
+    print(f"your score was: {score}")
+
+    play_again = input("would you like to play again? (y/n) ")
+    if play_again == "y":
+        main()
+    else:
+        quit()
 
 def main():
     WIDTH = 800
@@ -48,14 +37,15 @@ def main():
     RED = (255, 0, 0)
     fps = 25
     score = 0
-
-    menu_handler("start_menu", score)
     
     pygame.init()
     pygame.mixer.init()
     
     screen = pygame.display.set_mode(SIZE)
     clock = pygame.time.Clock()
+    text_font = pygame.font.SysFont("Arial", 20)
+
+    menu_handler(screen, clock, text_font, WHITE, score)
 
     snake = Snake(screen, GREEN)
     apple = Food(screen, RED)
