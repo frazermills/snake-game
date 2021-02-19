@@ -26,9 +26,11 @@ class StartMenu:
     def update(self):
         mousex, mousey = pygame.mouse.get_pos()
 
-        button_1 = pygame.Rect((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2) - 100, self.button_width, self.button_height)
+        button_1_xy = ((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2) - 100)
+        button_1 = pygame.Rect(button_1_xy[0], button_1_xy[1], self.button_width, self.button_height)
 
-        button_2 = pygame.Rect((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2) + 100, self.button_width, self.button_height)
+        button_2_xy = ((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2) + 100)
+        button_2 = pygame.Rect(button_2_xy[0], button_2_xy[1], self.button_width, self.button_height)
 
         option = ""
         if button_1.collidepoint((mousex, mousey)):
@@ -42,6 +44,8 @@ class StartMenu:
         pygame.draw.rect(self.screen, (255, 0, 0), button_1)
         pygame.draw.rect(self.screen, (255, 0, 0), button_2)
         self.draw_text("Snake game - by Frazer Mills", self.screen.get_width() // 2, self.screen.get_height() // 4)
+        self.draw_text("start game", button_1_xy[0] + 75, button_1_xy[1] + 35)
+        self.draw_text("quit game", button_2_xy[0] + 75, button_2_xy[1] + 35)
 
         pygame.display.update()
 
