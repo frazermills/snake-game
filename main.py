@@ -1,21 +1,53 @@
 import pygame, random
 from snake import Snake
 from food import Food
-from menus import StartMenu
+import menus
 
-def menu_handler(screen, clock, text_font, colour, score):
-    start_menu = StartMenu(screen, clock, text_font, colour)
-    start_menu.setup()
-    while start_menu.option == None:
-        start_menu.update()
-        start_menu.is_clicked()
+def menu_handler(mode, screen, clock, text_font, colour, score):
+    if mode == str("start"):
+        start_menu = menus.StartMenu(screen, clock, text_font, colour)
+        start_menu.setup()
+        while start_menu.option == None:
+            start_menu.update()
+            start_menu.is_clicked()
 
-        if start_menu.option == "play game":
-            print("start game")
-            return
-        elif start_menu.option == "quit game":
-            print("quit game")
-            end_game(score)
+            if start_menu.option == "start game":
+                print("start game")
+                return
+                
+            elif start_menu.option == "settings":
+                print("settings")
+                menu_mode = str("settings")
+                menu_handler(menu_mode, screen, clock, text_font, colour, score)
+
+            elif start_menu.option == "credits":
+                print("credits")
+                menu_mode = str("credits")
+                menu_handler(menu_mode, screen, clock, text_font, colour, score)
+
+            elif start_menu.option == "quit game":
+                print("quit game")
+                end_game(score)
+                
+    elif mode == str("settings"):
+        settings_menu = menus.SettingsMenu(screen, clock, text_font, colour)
+        settings_menu.setup()
+
+        while True:
+            settings_menu.update()
+            settings_menu.is_clicked()
+
+            if settings_menu.option == "button 1":
+                pass
+                
+            elif settings_menu.option == "button 1":
+                pass
+
+            elif settings_menu.option == "button 1":
+                pass
+
+    elif mode == str("credits"):
+        print("insert credits")
 
 def end_game(score):
     pygame.quit()
@@ -44,8 +76,9 @@ def main():
     screen = pygame.display.set_mode(SIZE)
     clock = pygame.time.Clock()
     text_font = pygame.font.SysFont("Arial", 20)
-
-    menu_handler(screen, clock, text_font, WHITE, score)
+    
+    menu_mode = str("start")
+    menu_handler(menu_mode, screen, clock, text_font, WHITE, score)
 
     snake = Snake(screen, GREEN)
     apple = Food(screen, RED)
