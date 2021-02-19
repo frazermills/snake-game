@@ -87,7 +87,7 @@ class StartMenu:
 class SettingsMenu(StartMenu):
     def __init__(self, screen, clock, font, colour):
         StartMenu.__init__(self, screen, clock, font, colour)
-        self.button_command = ["button 1", "button 2", "button 3", "back"]
+        self.button_command = ["difficulty", "button 2", "button 3", "back"]
         self.title = str("settings menu")
 
     def update(self):
@@ -108,7 +108,7 @@ class SettingsMenu(StartMenu):
         if button_1.collidepoint((mousex, mousey)):
             if self.click:
                 self.option = self.button_command[0]
-                print("button 1 pressed")
+                print("difficulty menu")
 
         elif button_2.collidepoint((mousex, mousey)):
             if self.click:
@@ -135,5 +135,100 @@ class SettingsMenu(StartMenu):
         self.draw_text(f"{self.button_command[1]}", button_2_xy[0] + 75, button_2_xy[1] + 35)
         self.draw_text(f"{self.button_command[2]}", button_3_xy[0] + 75, button_3_xy[1] + 35)
         self.draw_text(f"{self.button_command[3]}", button_4_xy[0] + 75, button_4_xy[1] + 35)
+
+        pygame.display.update()
+
+class CreditsMenu(StartMenu):
+    def __init__(self, screen, clock, font, colour):
+        StartMenu.__init__(self, screen, clock, font, colour)
+        self.button_command = ["back"]
+        self.title = str("Credits")
+        self.widget_text = ["Frazer Mills", "Person x"]
+
+    def update(self):
+        mousex, mousey = pygame.mouse.get_pos()
+
+        creator_xy = ((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2) - 100)
+        creator = pygame.Rect(creator_xy[0], creator_xy[1], self.button_width, self.button_height)
+
+        speical_thanks_xy = ((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2))
+        speical_thanks = pygame.Rect(speical_thanks_xy[0], speical_thanks_xy[1], self.button_width, self.button_height) 
+        
+        button_1_xy = ((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2) + 100)
+        button_1 = pygame.Rect(button_1_xy[0], button_1_xy[1], self.button_width, self.button_height)
+
+        if button_1.collidepoint((mousex, mousey)):
+            if self.click:
+                self.option = self.button_command[0]
+                print("back button pressed")
+
+        pygame.draw.rect(self.screen, (255, 0, 0), creator)
+        pygame.draw.rect(self.screen, (255, 0, 0), speical_thanks)
+
+        pygame.draw.rect(self.screen, (255, 0, 0), button_1)
+
+        self.draw_text(f"{self.title}", self.screen.get_width() // 2, self.screen.get_height() // 4)
+        self.draw_text(f"{self.widget_text[0]}", creator_xy[0] + 75, creator_xy[1] + 35)
+        self.draw_text(f"{self.widget_text[1]}", speical_thanks_xy[0] + 75, speical_thanks_xy[1] + 35)
+        self.draw_text(f"{self.button_command[0]}", button_1_xy[0] + 75, button_1_xy[1] + 35)
+
+        pygame.display.update()
+
+class DifficultyMenu(StartMenu):
+    def __init__(self, screen, clock, font, colour):
+        StartMenu.__init__(self, screen, clock, font, colour)
+        self.button_command = ["easy", "normal", "hard", "very hard", "back"]
+        self.title = str("difficulty menu")
+
+    def update(self):
+        mousex, mousey = pygame.mouse.get_pos()
+
+        button_1_xy = ((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2) - 100)
+        button_1 = pygame.Rect(button_1_xy[0], button_1_xy[1], self.button_width, self.button_height)
+
+        button_2_xy = ((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2))
+        button_2 = pygame.Rect(button_2_xy[0], button_2_xy[1], self.button_width, self.button_height)
+
+        button_3_xy = ((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2) + 100)
+        button_3 = pygame.Rect(button_3_xy[0], button_3_xy[1], self.button_width, self.button_height)        
+
+        button_4_xy = ((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2) + 200)
+        button_4 = pygame.Rect(button_4_xy[0], button_4_xy[1], self.button_width, self.button_height)
+
+        button_5_xy = ((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2) + 300)
+        button_5 = pygame.Rect(button_5_xy[0], button_5_xy[1], self.button_width, self.button_height)
+
+        if button_1.collidepoint((mousex, mousey)):
+            if self.click:
+                self.option = self.button_command[0]
+
+        elif button_2.collidepoint((mousex, mousey)):
+            if self.click:
+                self.option = self.button_command[1]
+
+        elif button_3.collidepoint((mousex, mousey)):
+            if self.click:
+                self.option = self.button_command[2]
+
+        elif button_4.collidepoint((mousex, mousey)):
+            if self.click:
+                self.option = self.button_command[3]
+                
+        elif button_5.collidepoint((mousex, mousey)):
+            if self.click:
+                self.option = self.button_command[4]
+                
+        pygame.draw.rect(self.screen, (255, 0, 0), button_1)
+        pygame.draw.rect(self.screen, (255, 0, 0), button_2)
+        pygame.draw.rect(self.screen, (255, 0, 0), button_3)
+        pygame.draw.rect(self.screen, (255, 0, 0), button_4)
+        pygame.draw.rect(self.screen, (255, 0, 0), button_5)
+
+        self.draw_text(f"{self.title}", self.screen.get_width() // 2, self.screen.get_height() // 4)
+        self.draw_text(f"{self.button_command[0]}", button_1_xy[0] + 75, button_1_xy[1] + 35)
+        self.draw_text(f"{self.button_command[1]}", button_2_xy[0] + 75, button_2_xy[1] + 35)
+        self.draw_text(f"{self.button_command[2]}", button_3_xy[0] + 75, button_3_xy[1] + 35)
+        self.draw_text(f"{self.button_command[3]}", button_4_xy[0] + 75, button_4_xy[1] + 35)
+        self.draw_text(f"{self.button_command[4]}", button_5_xy[0] + 75, button_5_xy[1] + 35)
 
         pygame.display.update()

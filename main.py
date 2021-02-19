@@ -3,56 +3,103 @@ from snake import Snake
 from food import Food
 import menus
 
-def menu_handler(mode, screen, clock, text_font, colour, score):
-    if mode == str("start"):
-        start_menu = menus.StartMenu(screen, clock, text_font, colour)
-        start_menu.setup()
-        while start_menu.option == None:
-            start_menu.update()
-            start_menu.is_clicked()
+def menu_handler(menu_mode, screen, clock, text_font, colour, score):
+    settings_options = {
+        "game_difficulty": "easy",
+        "snake_colour": (0, 255, 0)
+    }
+    
+    in_menu = True
+    
+    while in_menu:
+        if menu_mode == str("start"):
+            start_menu = menus.StartMenu(screen, clock, text_font, colour)
+            start_menu.setup()
+            while start_menu.option == None:
+                start_menu.update()
+                start_menu.is_clicked()
 
-            if start_menu.option == "start game":
-                print("start game")
-                return
-                
-            elif start_menu.option == "settings":
-                print("settings")
-                menu_mode = str("settings")
-                menu_handler(menu_mode, screen, clock, text_font, colour, score)
+                if start_menu.option == "start game":
+                    print("start game")
+                    in_menu = False
+                    break
+                    
+                elif start_menu.option == "settings":
+                    print("settings")
+                    menu_mode = str("settings")
 
-            elif start_menu.option == "credits":
-                print("credits")
-                menu_mode = str("credits")
-                menu_handler(menu_mode, screen, clock, text_font, colour, score)
+                elif start_menu.option == "credits":
+                    print("credits")
+                    menu_mode = str("credits")
+                    break
 
-            elif start_menu.option == "quit game":
-                print("quit game")
-                end_game(score)
-                
-    elif mode == str("settings"):
-        settings_menu = menus.SettingsMenu(screen, clock, text_font, colour)
-        settings_menu.setup()
+                elif start_menu.option == "quit game":
+                    print("quit game")
+                    end_game(score)
+                    
+        elif menu_mode == str("settings"):
+            settings_menu = menus.SettingsMenu(screen, clock, text_font, colour)
+            settings_menu.setup()
 
-        while True:
-            settings_menu.update()
-            settings_menu.is_clicked()
+            while True:
+                settings_menu.update()
+                settings_menu.is_clicked()
 
-            if settings_menu.option == "button 1":
-                pass
-                
-            elif settings_menu.option == "button 2":
-                pass
+                if settings_menu.option == "difficulty":
+                    menu_mode = str("difficulty")
+                    menu_handler(menu_mode, screen, clock, text_font, colour, score)
+                    
+                elif settings_menu.option == "button 2":
+                    pass
 
-            elif settings_menu.option == "button 3":
-                pass
+                elif settings_menu.option == "button 3":
+                    pass
 
-            elif settings_menu.option == "back":
-                print("start menu")
-                menu_mode = str("start")
-                menu_handler(menu_mode, screen, clock, text_font, colour, score)
+                elif settings_menu.option == "back":
+                    print("start menu")
+                    menu_mode = str("start")
+                    break
 
-    elif mode == str("credits"):
-        print("insert credits")
+        elif menu_mode == str("credits"):
+            credits_menu = menus.CreditsMenu(screen, clock, text_font, colour)
+            credits_menu.setup()
+
+            while True:
+                credits_menu.update()
+                credits_menu.is_clicked()
+
+                if credits_menu.option == "back":
+                    print("start menu")
+                    menu_mode = str("start")
+                    break
+
+        elif menu_mode == str("difficulty"):
+            difficulty_menu = menus.DifficultyMenu(screen, clock, text_font, colour)
+            difficulty_menu.setup()
+
+            while True:
+                difficulty_menu.update()
+                difficulty_menu.is_clicked()
+
+                if difficulty_menu.option == "easy":
+                    settings_options["game_difficulty"] = "easy"
+                    
+                elif difficulty_menu.option == "normal":
+                    settings_options["game_difficulty"] = "normal"
+
+                elif difficulty_menu.option == "hard":
+                    settings_options["game_difficulty"] = "hard"
+
+                elif difficulty_menu.option == "very hard":
+                    settings_options["game_difficulty"] = "very hard"
+
+                elif difficulty_menu.option == "back":
+                    print("start menu")
+                    menu_mode = str("start")
+                    menu_handler(menu_mode, screen, clock, text_font, colour, score)
+
+    settings_options["game_difficulty"] = "very hard"
+    return settings_options
 
 def end_game(score):
     pygame.quit()
@@ -83,9 +130,14 @@ def main():
     text_font = pygame.font.SysFont("Arial", 20)
     
     menu_mode = str("start")
-    menu_handler(menu_mode, screen, clock, text_font, WHITE, score)
+    settings_options = menu_handler(menu_mode, screen, clock, text_font, WHITE, score)
+    print(settings_options)
 
-    snake = Snake(screen, GREEN)
+    game_difficulty = settings_options["game_difficulty"]
+    snake_colour = settings_options["snake_colour"]
+    print(snake_colour)
+
+    snake = Snake(screen, GREEN, game_difficulty)
     apple = Food(screen, RED)
 
     burp_1 = pygame.mixer.Sound("sounds/burp_1.wav")
