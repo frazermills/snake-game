@@ -40,11 +40,16 @@ def menu_handler(mode, screen, clock, text_font, colour, score):
             if settings_menu.option == "button 1":
                 pass
                 
-            elif settings_menu.option == "button 1":
+            elif settings_menu.option == "button 2":
                 pass
 
-            elif settings_menu.option == "button 1":
+            elif settings_menu.option == "button 3":
                 pass
+
+            elif settings_menu.option == "back":
+                print("start menu")
+                menu_mode = str("start")
+                menu_handler(menu_mode, screen, clock, text_font, colour, score)
 
     elif mode == str("credits"):
         print("insert credits")
