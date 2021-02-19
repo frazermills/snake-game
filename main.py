@@ -1,16 +1,16 @@
-import pygame, random
+import pygame, random, menus
 from snake import Snake
 from food import Food
-import menus
+from particle_system import ParticleSystem
 
 def menu_handler(menu_mode, screen, clock, text_font, colour, score):
     settings_options = {
         "game_difficulty": "easy",
         "snake_colour": (0, 255, 0)
     }
-    
+
     in_menu = True
-    
+
     while in_menu:
         if menu_mode == str("start"):
             start_menu = menus.StartMenu(screen, clock, text_font, colour)
@@ -22,7 +22,6 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
                 if start_menu.option == "start game":
                     print("start game")
                     in_menu = False
-                    break
                     
                 elif start_menu.option == "settings":
                     print("settings")
@@ -41,7 +40,7 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
             settings_menu = menus.SettingsMenu(screen, clock, text_font, colour)
             settings_menu.setup()
 
-            while True:
+            while settings_menu.option == None:
                 settings_menu.update()
                 settings_menu.is_clicked()
 
@@ -64,7 +63,7 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
             credits_menu = menus.CreditsMenu(screen, clock, text_font, colour)
             credits_menu.setup()
 
-            while True:
+            while credits_menu.option == None:
                 credits_menu.update()
                 credits_menu.is_clicked()
 
@@ -77,28 +76,29 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
             difficulty_menu = menus.DifficultyMenu(screen, clock, text_font, colour)
             difficulty_menu.setup()
 
-            while True:
+            while difficulty_menu.option == None:
                 difficulty_menu.update()
                 difficulty_menu.is_clicked()
 
                 if difficulty_menu.option == "easy":
-                    settings_options["game_difficulty"] = "easy"
+                    settings_options["game_difficulty"] = str("easy")
                     
                 elif difficulty_menu.option == "normal":
-                    settings_options["game_difficulty"] = "normal"
-
+                    settings_options["game_difficulty"] = str("normal")
+                    
                 elif difficulty_menu.option == "hard":
-                    settings_options["game_difficulty"] = "hard"
+                    settings_options["game_difficulty"] = str("hard")
 
                 elif difficulty_menu.option == "very hard":
-                    settings_options["game_difficulty"] = "very hard"
+                    settings_options["game_difficulty"] = str("very hard")
+
 
                 elif difficulty_menu.option == "back":
                     print("start menu")
                     menu_mode = str("start")
-                    menu_handler(menu_mode, screen, clock, text_font, colour, score)
+                    print("menu mode set to start")
+                    break
 
-    settings_options["game_difficulty"] = "very hard"
     return settings_options
 
 def end_game(score):
@@ -131,20 +131,20 @@ def main():
     
     menu_mode = str("start")
     settings_options = menu_handler(menu_mode, screen, clock, text_font, WHITE, score)
-    print(settings_options)
 
     game_difficulty = settings_options["game_difficulty"]
     snake_colour = settings_options["snake_colour"]
-    print(snake_colour)
 
     snake = Snake(screen, GREEN, game_difficulty)
     apple = Food(screen, RED)
+    particle_system = ParticleSystem(screen)
+    trigger = False
 
     burp_1 = pygame.mixer.Sound("sounds/burp_1.wav")
     burp_2 = pygame.mixer.Sound("sounds/burp_2.wav")
     eat_food = pygame.mixer.Sound("sounds/eat_food.wav")
     game_over = pygame.mixer.Sound("sounds/game_over.wav")
-    
+
     music = pygame.mixer.music.load("sounds/Cyberpunk_Moonlight_Sonata.mp3")
     pygame.mixer.music.play(-1)
 
@@ -173,6 +173,7 @@ def main():
             apple.update_xy()
             snake.grow()
             score += 1
+            trigger = True
 
             num = random.randrange(10)
             if num == 9:
@@ -188,6 +189,8 @@ def main():
 
         snake.move(snake.direction)
         apple.draw()
+        particle_system.explode(trigger, snake.x, snake.y)
+        trigger = False
 
         pygame.display.update()
         clock.tick(fps)
