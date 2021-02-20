@@ -6,7 +6,7 @@ DEBUG = False
 
 def menu_handler(menu_mode, screen, clock, text_font, colour, score):
     settings_options = {
-        "game_difficulty": "normal",
+        "game_difficulty": "easy",
         "snake_colour": (0, 255, 0)
     }
 
@@ -126,6 +126,7 @@ def main():
     GREEN = (0, 255, 0)
     RED = (255, 0, 0)
     GOLD = (255, 215, 0)
+    PURPLE = (153,50,204)
     fps = 25
     score = 0
     
@@ -145,11 +146,13 @@ def main():
     snake = Snake(screen, GREEN, game_difficulty)
     apple = food.Apple(screen, RED)
     golden_apple = food.GoldenApple(screen, GOLD)
+    poisonous_apple = food.PoisonousApple(screen, PURPLE)
     particle_system = ParticleSystem(screen)
 
     trigger = False
     stage_1 = True
     stage_2 = False
+    stage_3 = False
     particle_colour = GREEN
 
     burp_1 = pygame.mixer.Sound("sounds/burp_1.wav")
@@ -160,7 +163,7 @@ def main():
     music = pygame.mixer.music.load("sounds/Cyberpunk_Moonlight_Sonata.mp3")
     pygame.mixer.music.play(-1)
 
-    while True:
+    while not snake.is_dead:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -180,18 +183,21 @@ def main():
             if snake.direction != 'u':
                 snake.direction = 'd'
 
-        if score == 10:
+        if score > 10:
             stage_2 = True
             stage_1 = False
+
+        if score > 20:
+            stage_3 = True
+            stage_2 = False
           
         if snake.x < 0 or snake.x > WIDTH or snake.y < 0 or snake.y > HEIGHT:
-            pygame.mixer.fadeout(1)
-            menu_mode = str("game over")
-            menu_handler(menu_mode, screen, clock, text_font, WHITE, score)
+            snake.is_dead = True
         
         screen.fill(BLACK)
 
         if stage_1:
+            if DEBUG: print("stage 1")
             apple.draw()
             
             if apple.is_eaten(snake.x, snake.y, snake.size):
@@ -209,6 +215,7 @@ def main():
                     burp_2.play()
 
         elif stage_2:
+            if DEBUG: print("stage 2")
             golden_apple.draw()
 
             if golden_apple.is_eaten(snake.x, snake.y, snake.size):
@@ -225,12 +232,25 @@ def main():
                 elif num == 1:
                     burp_2.play()
 
+        elif stage_3:
+            if DEBUG: print("stage 3")
+            poisonous_apple.draw()
+            poisonous_apple.follow_snake(snake.x, snake.y)
+
+            if poisonous_apple.is_eaten(snake.x, snake.y, snake.size):
+                eat_food.play()
+                snake.is_dead = True
+
         snake.move(snake.direction)
         particle_system.explode(trigger, snake.x, snake.y, particle_colour)
         trigger = False
 
         pygame.display.update()
         clock.tick(fps)
+
+    pygame.mixer.fadeout(1)
+    menu_mode = str("game over")
+    menu_handler(menu_mode, screen, clock, text_font, WHITE, score)
 
 if __name__ == "__main__":
     main()

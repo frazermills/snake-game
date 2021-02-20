@@ -27,7 +27,25 @@ class Apple:
             eaten = False
         return eaten
 
+
 class GoldenApple(Apple):
     def __init__(self, screen, colour):
         Apple.__init__(self, screen, colour)
         self.size = 60
+
+
+class PoisonousApple(Apple):
+    def __init__(self, screen, colour):
+        Apple.__init__(self, screen, colour)
+        self.size = 45
+
+    def follow_snake(self, snakex, snakey):
+        if self.x < snakex:
+            self.x += 5
+        elif self.x > snakex:
+            self.x -= 5
+
+        if self.y < snakey:
+            self.y += 5
+        elif self.y > snakey:
+            self.y -= 5

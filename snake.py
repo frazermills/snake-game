@@ -13,6 +13,7 @@ class Snake:
         self.y = screen.get_height() // 2
         self.xy = [(self.x, self.y)]
         self.direction = 'r'
+        self.is_dead = False
 
     def update(self):
         self.xy += [(self.x, self.y)]
