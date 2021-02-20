@@ -2,9 +2,10 @@ import pygame
 
 class Snake:
     
-    def __init__(self, screen, colour):
+    def __init__(self, screen, colour, difficulty):
         self.screen = screen
         self.colour = colour
+        self.difficulty = difficulty
         self.size = 15
         self.lenght = 5
         self.vel = 15
@@ -34,5 +35,18 @@ class Snake:
             self.update()
 
     def grow(self):
-        self.size += 1
-        self.lenght += 1
+        if self.difficulty == "easy":
+            self.size += 1
+            self.lenght += 1
+        elif self.difficulty == "normal":
+            self.size += 2
+            self.lenght += 2
+            self.vel += 1
+        elif self.difficulty == "hard":
+            self.size += 3
+            self.lenght += 3
+            self.vel += 2
+        elif self.difficulty == "very hard":
+            self.size += 5
+            self.lenght += 4
+            self.vel += 5
