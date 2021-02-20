@@ -18,7 +18,7 @@ class StartMenu:
         pygame.init()
         pygame.display.set_caption(f"{self.title}")
         self.screen.fill((0,0,0))
-
+        
     def draw_text(self, text, x, y):
         textobj = self.font.render(text, 1, self.colour)
         textrect = textobj.get_rect()
@@ -83,6 +83,39 @@ class StartMenu:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     self.click = True
+
+class GameOverMenu(StartMenu):
+    def __init__(self, screen, clock, font, colour):
+        StartMenu.__init__(self, screen, clock, font, colour)
+        self.button_command = ["play again", "quit game"]
+        self.title = str("game over menu")
+        pygame.mixer.fadeout(1)
+
+    def update(self):
+        mousex, mousey = pygame.mouse.get_pos()
+
+        button_1_xy = ((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2) - 100)
+        button_1 = pygame.Rect(button_1_xy[0], button_1_xy[1], self.button_width, self.button_height)
+
+        button_2_xy = ((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2))
+        button_2 = pygame.Rect(button_2_xy[0], button_2_xy[1], self.button_width, self.button_height)
+
+        if button_1.collidepoint((mousex, mousey)):
+            if self.click:
+                self.option = self.button_command[0]
+
+        elif button_2.collidepoint((mousex, mousey)):
+            if self.click:
+                self.option = self.button_command[1]
+
+        pygame.draw.rect(self.screen, (255, 0, 0), button_1)
+        pygame.draw.rect(self.screen, (255, 0, 0), button_2)
+        
+        self.draw_text(f"{self.title}", self.screen.get_width() // 2, self.screen.get_height() // 4)
+        self.draw_text(f"{self.button_command[0]}", button_1_xy[0] + 75, button_1_xy[1] + 35)
+        self.draw_text(f"{self.button_command[1]}", button_2_xy[0] + 75, button_2_xy[1] + 35)
+
+        pygame.display.update()
 
 class SettingsMenu(StartMenu):
     def __init__(self, screen, clock, font, colour):

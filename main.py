@@ -12,6 +12,7 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
     in_menu = True
 
     while in_menu:
+        
         if menu_mode == str("start"):
             start_menu = menus.StartMenu(screen, clock, text_font, colour)
             start_menu.setup()
@@ -35,6 +36,23 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
                 elif start_menu.option == "quit game":
                     print("quit game")
                     end_game(score)
+                    
+        if menu_mode == str("game over"):            
+            game_over_menu = menus.GameOverMenu(screen, clock, text_font, colour)
+            game_over_menu.setup()
+            while game_over_menu.option == None:
+                game_over_menu.update()
+                game_over_menu.is_clicked()
+
+                if game_over_menu.option == "play again":
+                    print("play again")
+                    menu_mode = str("start")
+                    menu_handler(menu_mode, screen, clock, text_font, colour, 0)
+
+                elif game_over_menu.option == "quit game":
+                    print("quit game")
+                    pygame.quit()
+                    quit()
                     
         elif menu_mode == str("settings"):
             settings_menu = menus.SettingsMenu(screen, clock, text_font, colour)
@@ -100,16 +118,6 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
                     break
 
     return settings_options
-
-def end_game(score):
-    pygame.quit()
-    print(f"your score was: {score}")
-
-    play_again = input("would you like to play again? (y/n) ")
-    if play_again == "y":
-        main()
-    else:
-        quit()
 
 def main():
     WIDTH = 800
@@ -183,7 +191,8 @@ def main():
 
         if snake.x < 0 or snake.x > WIDTH or snake.y < 0 or snake.y > HEIGHT:
             pygame.mixer.fadeout(1)
-            end_game(score)
+            menu_mode = str("game over")
+            menu_handler(menu_mode, screen, clock, text_font, WHITE, score)
         
         screen.fill(BLACK)
 
