@@ -1,8 +1,7 @@
 import pygame, random
 DEBUG = True
 
-class Food:
-
+class Apple:
     def __init__(self, screen, colour):
         self.screen = screen
         self.colour = colour
@@ -27,3 +26,8 @@ class Food:
         else:
             eaten = False
         return eaten
+
+class GoldenApple(Apple):
+    def __init__(self, screen, colour):
+        Apple.__init__(self, screen, colour)
+        self.size = 60

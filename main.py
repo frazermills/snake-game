@@ -1,11 +1,10 @@
-import pygame, random, menus
+import pygame, random, menus, food
 from snake import Snake
-from food import Food
 from particle_system import ParticleSystem
 
 def menu_handler(menu_mode, screen, clock, text_font, colour, score):
     settings_options = {
-        "game_difficulty": "easy",
+        "game_difficulty": "normal",
         "snake_colour": (0, 255, 0)
     }
 
@@ -45,9 +44,7 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
                 game_over_menu.is_clicked()
 
                 if game_over_menu.option == "play again":
-                    print("play again")
-                    menu_mode = str("start")
-                    menu_handler(menu_mode, screen, clock, text_font, colour, 0)
+                    main()
 
                 elif game_over_menu.option == "quit game":
                     print("quit game")
@@ -127,6 +124,7 @@ def main():
     BLACK = (0, 0, 0)
     GREEN = (0, 255, 0)
     RED = (255, 0, 0)
+    GOLD = (255, 215, 0)
     fps = 25
     score = 0
     
@@ -144,9 +142,14 @@ def main():
     snake_colour = settings_options["snake_colour"]
 
     snake = Snake(screen, GREEN, game_difficulty)
-    apple = Food(screen, RED)
+    apple = food.Apple(screen, RED)
+    golden_apple = food.GoldenApple(screen, GOLD)
     particle_system = ParticleSystem(screen)
+
     trigger = False
+    stage_1 = True
+    stage_2 = False
+    particle_colour = GREEN
 
     burp_1 = pygame.mixer.Sound("sounds/burp_1.wav")
     burp_2 = pygame.mixer.Sound("sounds/burp_2.wav")
@@ -176,19 +179,10 @@ def main():
             if snake.direction != 'u':
                 snake.direction = 'd'
 
-        if apple.is_eaten(snake.x, snake.y, snake.size):
-            eat_food.play()
-            apple.update_xy()
-            snake.grow()
-            score += 1
-            trigger = True
-
-            num = random.randrange(10)
-            if num == 9:
-                burp_1.play()
-            elif num == 1:
-                burp_2.play()
-
+        if score == 10:
+            stage_2 = True
+            stage_1 = False
+          
         if snake.x < 0 or snake.x > WIDTH or snake.y < 0 or snake.y > HEIGHT:
             pygame.mixer.fadeout(1)
             menu_mode = str("game over")
@@ -196,9 +190,42 @@ def main():
         
         screen.fill(BLACK)
 
+        if stage_1:
+            apple.draw()
+            
+            if apple.is_eaten(snake.x, snake.y, snake.size):
+                eat_food.play()
+                apple.update_xy()
+                snake.grow()
+                score += 1
+                trigger = True
+                particle_colour = apple.colour
+
+                num = random.randrange(10)
+                if num == 9:
+                    burp_1.play()
+                elif num == 1:
+                    burp_2.play()
+
+        elif stage_2:
+            golden_apple.draw()
+
+            if golden_apple.is_eaten(snake.x, snake.y, snake.size):
+                eat_food.play()
+                golden_apple.update_xy()
+                snake.grow()
+                score += 2
+                trigger = True
+                particle_colour = golden_apple.colour
+
+                num = random.randrange(5)
+                if num == 4:
+                    burp_1.play()
+                elif num == 1:
+                    burp_2.play()
+
         snake.move(snake.direction)
-        apple.draw()
-        particle_system.explode(trigger, snake.x, snake.y)
+        particle_system.explode(trigger, snake.x, snake.y, particle_colour)
         trigger = False
 
         pygame.display.update()

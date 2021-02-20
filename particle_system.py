@@ -1,16 +1,26 @@
 import pygame, random
 
 class ParticleSystem:
+    RED = (255, 0, 0)
+    GOLD = (255, 215, 0)
+    
     def __init__(self, screen):
         self.screen = screen
         self.particles = []
-        self.colour = (255, 0, 0)
-        self.blast_radius = 35
+        self.blast_radius = 35 
         self.particle_number = 25
         self.directions = []
         self.particle_sizes = []
 
-    def explode(self,trigger, x, y):
+    def explode(self,trigger, x, y, colour):
+        if colour == self.GOLD:
+            self.blast_radius = 70
+            self.particle_number = 80
+
+        elif colour == self.RED:
+            self.blast_radius = 35
+            self.particle_number = 25
+        
         if trigger:
             self.particles = [
                 (random.randint(x - self.blast_radius, x + self.blast_radius),
@@ -31,7 +41,7 @@ class ParticleSystem:
             ]
 
         for i, xy in enumerate(self.particles):
-            pygame.draw.rect(self.screen, self.colour, ((xy, self.sizes[i])))
+            pygame.draw.rect(self.screen, colour, ((xy, self.sizes[i])))
             
         self.particles = [
             (xy[0] - d[0], xy[1] - d[1])
