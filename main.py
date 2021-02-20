@@ -2,6 +2,8 @@ import pygame, random, menus, food
 from snake import Snake
 from particle_system import ParticleSystem
 
+DEBUG = False
+
 def menu_handler(menu_mode, screen, clock, text_font, colour, score):
     settings_options = {
         "game_difficulty": "normal",
@@ -20,20 +22,20 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
                 start_menu.is_clicked()
 
                 if start_menu.option == "start game":
-                    print("start game")
+                    if DEBUG: print("start game")
                     in_menu = False
                     
                 elif start_menu.option == "settings":
-                    print("settings")
+                    if DEBUG: print("settings")
                     menu_mode = str("settings")
 
                 elif start_menu.option == "credits":
-                    print("credits")
+                    if DEBUG: print("credits")
                     menu_mode = str("credits")
                     break
 
                 elif start_menu.option == "quit game":
-                    print("quit game")
+                    if DEBUG: print("quit game")
                     end_game(score)
                     
         if menu_mode == str("game over"):            
@@ -47,7 +49,7 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
                     main()
 
                 elif game_over_menu.option == "quit game":
-                    print("quit game")
+                    if DEBUG: print("quit game")
                     pygame.quit()
                     quit()
                     
@@ -70,7 +72,7 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
                     pass
 
                 elif settings_menu.option == "back":
-                    print("start menu")
+                    if DEBUG: print("start menu")
                     menu_mode = str("start")
                     break
 
@@ -83,7 +85,7 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
                 credits_menu.is_clicked()
 
                 if credits_menu.option == "back":
-                    print("start menu")
+                    if DEBUG: print("start menu")
                     menu_mode = str("start")
                     break
 
@@ -109,9 +111,8 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
 
 
                 elif difficulty_menu.option == "back":
-                    print("start menu")
                     menu_mode = str("start")
-                    print("menu mode set to start")
+                    if DEBUG: print("menu mode set to start")
                     break
 
     return settings_options
