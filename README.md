@@ -19,6 +19,9 @@ If you have any features you want to add, feel free to contribute.
 ## Special Thanks:
 * A huge thank you to [Joth](https://opengameart.org/users/joth) for creating the [music I used in my game](https://opengameart.org/content/cyberpunk-moonlight-sonata) and putting it in the public domain so that anybody can use it.
 
+## Github pages:
+[Here is the github pages website for the project](https://frazermills.github.io/snake-game/), I hope to make some changes to it soon.
+
 ## Built With:
 * python 3
 
