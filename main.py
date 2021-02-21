@@ -342,6 +342,8 @@ def main():
 
         snake.move(snake.direction)
         particle_system.explode(trigger, snake.x, snake.y, particle_colour)
+        screen.blit(text_font.render(f'score: {score}', True, WHITE), (10, 10))
+        
         trigger = False
 
         pygame.display.update()
