@@ -14,6 +14,7 @@ class Snake:
         self.xy = [(self.x, self.y)]
         self.direction = 'r'
         self.is_dead = False
+        self.game_won = False
 
     def update(self):
         self.xy += [(self.x, self.y)]

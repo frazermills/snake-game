@@ -38,8 +38,11 @@ class PoisonousApple(Fruit):
     def __init__(self, screen, colour):
         Fruit.__init__(self, screen, colour)
         self.size = 45
+        self.timer = 0
 
     def follow_snake(self, snakex, snakey):
+        self.timer += 1
+        
         if self.x < snakex:
             self.x += 5
         elif self.x > snakex:
@@ -49,3 +52,9 @@ class PoisonousApple(Fruit):
             self.y += 5
         elif self.y > snakey:
             self.y -= 5
+
+class VictoryFruit(Fruit):
+    def __init__(self, screen, colour):
+        Fruit.__init__(self, screen, colour)
+        self.size = 30
+        

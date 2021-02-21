@@ -1,10 +1,10 @@
-import pygame, random, menus, food
+import pygame, random, menus, food, time
 from snake import Snake
 from particle_system import ParticleSystem
 
-DEBUG = True
+DEBUG = False
 
-def menu_handler(menu_mode, screen, clock, text_font, colour, score):
+def menu_handler(menu_mode, screen, clock, text_font, colour, score, game_won):
     settings_options = {
         "game_difficulty": "easy",
         "snake_colour": (0, 255, 0),
@@ -41,7 +41,7 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
                     quit()
                     
         if menu_mode == str("game over"):            
-            game_over_menu = menus.GameOverMenu(screen, clock, text_font, colour)
+            game_over_menu = menus.GameOverMenu(screen, clock, text_font, colour, game_won)
             game_over_menu.setup()
             while game_over_menu.option == None:
                 game_over_menu.update()
@@ -54,6 +54,9 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
                     if DEBUG: print("quit game")
                     pygame.quit()
                     quit()
+
+                elif game_over_menu.option == "high score":
+                    print(score)
                     
         elif menu_mode == str("settings"):
             settings_menu = menus.SettingsMenu(screen, clock, text_font, colour)
@@ -197,7 +200,7 @@ def main():
     text_font = pygame.font.SysFont("Arial", 20)
     
     menu_mode = str("start")
-    settings_options = menu_handler(menu_mode, screen, clock, text_font, WHITE, score)
+    settings_options = menu_handler(menu_mode, screen, clock, text_font, WHITE, score, False)
 
     game_difficulty = settings_options["game_difficulty"]
     snake_colour = settings_options["snake_colour"]
@@ -214,13 +217,16 @@ def main():
     fruit = food.Fruit(screen, fruit_colour[fruit_type])
     golden_apple = food.GoldenApple(screen, GOLD)
     poisonous_apple = food.PoisonousApple(screen, PURPLE)
+    victory_fruit = food.VictoryFruit(screen, WHITE)
     particle_system = ParticleSystem(screen)
 
     trigger = False
     stage_1 = True
     stage_2 = False
     stage_3 = False
-    particle_colour = GREEN
+    stage_4 = False
+    stage_5 = False
+    particle_colour = None
 
     burp_1 = pygame.mixer.Sound("sounds/burp_1.wav")
     burp_2 = pygame.mixer.Sound("sounds/burp_2.wav")
@@ -230,7 +236,7 @@ def main():
     music = pygame.mixer.music.load("sounds/Cyberpunk_Moonlight_Sonata.mp3")
     pygame.mixer.music.play(-1)
 
-    while not snake.is_dead:
+    while not snake.is_dead or not snake.game_won:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -257,6 +263,14 @@ def main():
         if score > 20:
             stage_3 = True
             stage_2 = False
+
+        if poisonous_apple.timer > 300:
+            stage_4 = True
+            stage_3 = False
+
+        if snake.game_won:
+            stage_5 = True
+            stage_4 = False
           
         if snake.x < 0 or snake.x > WIDTH or snake.y < 0 or snake.y > HEIGHT:
             snake.is_dead = True
@@ -300,13 +314,31 @@ def main():
                     burp_2.play()
 
         elif stage_3:
+            if poisonous_apple.timer == 100:
+                stage_4 = True
+                stage_3 = False
+
             if DEBUG: print("stage 3")
+            
             poisonous_apple.draw()
             poisonous_apple.follow_snake(snake.x, snake.y)
 
             if poisonous_apple.is_eaten(snake.x, snake.y, snake.size):
                 eat_food.play()
                 snake.is_dead = True
+
+        elif stage_4:
+            if DEBUG: print("stage 4")
+
+            victory_fruit.draw()
+
+            if victory_fruit.is_eaten(snake.x, snake.y, snake.size):
+                if DEBUG: print("you win")
+                snake.game_won = True
+        
+        elif stage_5:
+            snake.game_won = True
+            snake.is_dead = True
 
         snake.move(snake.direction)
         particle_system.explode(trigger, snake.x, snake.y, particle_colour)
@@ -317,7 +349,7 @@ def main():
 
     pygame.mixer.fadeout(1)
     menu_mode = str("game over")
-    menu_handler(menu_mode, screen, clock, text_font, WHITE, score)
+    menu_handler(menu_mode, screen, clock, text_font, WHITE, score, snake.game_won)
 
 if __name__ == "__main__":
     main()

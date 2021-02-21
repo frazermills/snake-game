@@ -85,11 +85,15 @@ class StartMenu:
                     self.click = True
 
 class GameOverMenu(StartMenu):
-    def __init__(self, screen, clock, font, colour):
+    def __init__(self, screen, clock, font, colour, game_won):
         StartMenu.__init__(self, screen, clock, font, colour)
-        self.button_command = ["play again", "quit game"]
-        self.title = str("game over menu")
+        self.button_command = ["play again", "quit game", "high score"]
         pygame.mixer.fadeout(1)
+        self.game_won = game_won
+        if self.game_won:
+            self.title = str("you win!")
+        else:
+            self.title = str("game over menu")
 
     def update(self):
         mousex, mousey = pygame.mouse.get_pos()
@@ -100,6 +104,10 @@ class GameOverMenu(StartMenu):
         button_2_xy = ((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2))
         button_2 = pygame.Rect(button_2_xy[0], button_2_xy[1], self.button_width, self.button_height)
 
+        if self.game_won:
+                button_3_xy = ((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2) + 100)
+                button_3 = pygame.Rect(button_3_xy[0], button_3_xy[1], self.button_width, self.button_height)
+
         if button_1.collidepoint((mousex, mousey)):
             if self.click:
                 self.option = self.button_command[0]
@@ -108,12 +116,20 @@ class GameOverMenu(StartMenu):
             if self.click:
                 self.option = self.button_command[1]
 
+        elif self.game_won and button_3.collidepoint((mousex, mousey)):
+            if self.click:
+                self.option = self.button_command[2]
+
         pygame.draw.rect(self.screen, (255, 0, 0), button_1)
         pygame.draw.rect(self.screen, (255, 0, 0), button_2)
         
         self.draw_text(f"{self.title}", self.screen.get_width() // 2, self.screen.get_height() // 4)
         self.draw_text(f"{self.button_command[0]}", button_1_xy[0] + 75, button_1_xy[1] + 35)
         self.draw_text(f"{self.button_command[1]}", button_2_xy[0] + 75, button_2_xy[1] + 35)
+
+        if self.game_won:
+            pygame.draw.rect(self.screen, (255, 0, 0), button_3)
+            self.draw_text(f"{self.button_command[2]}", button_3_xy[0] + 75, button_3_xy[1] + 35)
 
         pygame.display.update()
 
