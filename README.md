@@ -13,12 +13,15 @@ This project is a simple snake-based game written in python.
         3. In stage 3, avoid the poisonous fruit for a set amount of time.
         4. In stage 4, get to the victory fruit as fast as possible.
 
+## Contributing:
+If you have any features you want to add, feel free to contribute.
+
+## Special Thanks:
+* A huge thank you to [Joth](https://opengameart.org/users/joth) for creating the [music I used in my game](https://opengameart.org/content/cyberpunk-moonlight-sonata) and putting it in the public domain so that anybody can use it.
+
 ## Built With:
 * python 3
 
 ## Requirements:
 * pygame
 * python 3
-
-## Contributing:
-If you have any features you want to add, feel free to contribute.
