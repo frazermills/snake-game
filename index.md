@@ -1,37 +1,29 @@
-## Welcome to GitHub Pages
+# A Snake-based game
+#### by Frazer Mills
 
-You can use the [editor on GitHub](https://github.com/frazermills/snake-game/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+## Here is the readme for my project:
+### Introduction
+This project is a simple snake-based game written in python.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### How to play:
+* Controls:
+    * wasd for controlling snake direction.
+* Objectives:
+    * The main objectives is to complete the game as quickly as possible. This can be done by:
+        1. In stage 1, eat all the fuits.
+        2. In stage 2, eat all the golden apples.
+        3. In stage 3, avoid the poisonous fruit for a set amount of time.
+        4. In stage 4, get to the victory fruit as fast as possible.
 
-### Markdown
+### Contributing:
+If you have any features you want to add, feel free to contribute.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Special Thanks:
+* A huge thank you to [Joth](https://opengameart.org/users/joth) for creating the [music I used in my game](https://opengameart.org/content/cyberpunk-moonlight-sonata) and putting it in the public domain so that anybody can use it.
 
-```markdown
-Syntax highlighted code block
+### Built With:
+* python 3
 
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/frazermills/snake-game/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+### Requirements:
+* pygame
+* python 3
