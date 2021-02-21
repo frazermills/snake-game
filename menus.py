@@ -12,7 +12,7 @@ class StartMenu:
         self.button_height = 75
         self.option = None
         self.button_command = ["start game", "settings", "quit game", "credits"]
-        self.title = str("Snake game - by Frazer Mills")
+        self.title = "Snake game - by Frazer Mills"
 
     def setup(self):
         pygame.init()
@@ -91,9 +91,9 @@ class GameOverMenu(StartMenu):
         pygame.mixer.fadeout(1)
         self.game_won = game_won
         if self.game_won:
-            self.title = str("you win!")
+            self.title = "you win!"
         else:
-            self.title = str("game over menu")
+            self.title = "game over menu"
 
     def update(self):
         mousex, mousey = pygame.mouse.get_pos()
@@ -137,7 +137,7 @@ class SettingsMenu(StartMenu):
     def __init__(self, screen, clock, font, colour):
         StartMenu.__init__(self, screen, clock, font, colour)
         self.button_command = ["difficulty", "snake colour", "fruit type", "back"]
-        self.title = str("settings menu")
+        self.title = "settings menu"
 
     def update(self):
         mousex, mousey = pygame.mouse.get_pos()
@@ -191,7 +191,7 @@ class CreditsMenu(StartMenu):
     def __init__(self, screen, clock, font, colour):
         StartMenu.__init__(self, screen, clock, font, colour)
         self.button_command = ["back"]
-        self.title = str("Credits")
+        self.title = "Credits"
         self.widget_text = ["Frazer Mills", "Person x"]
 
     def update(self):
@@ -227,7 +227,7 @@ class DifficultyMenu(StartMenu):
     def __init__(self, screen, clock, font, colour):
         StartMenu.__init__(self, screen, clock, font, colour)
         self.button_command = ["easy", "normal", "hard", "very hard", "back"]
-        self.title = str("difficulty menu")
+        self.title = "difficulty menu"
 
     def update(self):
         mousex, mousey = pygame.mouse.get_pos()
@@ -287,12 +287,12 @@ class SnakeColourMenu(DifficultyMenu):
     def __init__(self, screen, clock, font, colour):
         DifficultyMenu.__init__(self, screen, clock, font, colour)
         self.button_command = ["green", "white", "pink", "blue", "back"]
-        self.title = str("snake colour menu")
+        self.title = "snake colour menu"
 
 
 class FruitTypeMenu(DifficultyMenu):
     def __init__(self, screen, clock, font, colour):
         DifficultyMenu.__init__(self, screen, clock, font, colour)
         self.button_command = ["apple", "banana", "orange", "blueberry", "back"]
-        self.title = str("snake colour menu")
+        self.title = "snake colour menu"
 

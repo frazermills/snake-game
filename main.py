@@ -2,8 +2,6 @@ import pygame, random, menus, food, time
 from snake import Snake
 from particle_system import ParticleSystem
 
-DEBUG = False
-
 # ---------------------------- Handles the menus from the menus module --------------------------- #
 def menu_handler(menu_mode, screen, clock, text_font, colour, score, game_won):
     settings_options = {
@@ -17,7 +15,7 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score, game_won):
     while in_menu:
 
 # ------------------------------------------ Start menu ------------------------------------------ #
-        if menu_mode == str("start"):
+        if menu_mode == "start":
             start_menu = menus.StartMenu(screen, clock, text_font, colour)
             start_menu.setup()
             while start_menu.option == None:
@@ -25,25 +23,21 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score, game_won):
                 start_menu.is_clicked()
 
                 if start_menu.option == "start game":
-                    if DEBUG: print("start game")
                     in_menu = False
                     
                 elif start_menu.option == "settings":
-                    if DEBUG: print("settings")
-                    menu_mode = str("settings")
+                    menu_mode = "settings"
 
                 elif start_menu.option == "credits":
-                    if DEBUG: print("credits")
-                    menu_mode = str("credits")
+                    menu_mode = "credits"
                     break
 
                 elif start_menu.option == "quit game":
-                    if DEBUG: print("quit game")
                     pygame.quit()
                     quit()
 
 # ---------------------------------------- Game over menu ---------------------------------------- #                    
-        elif menu_mode == str("game over"):            
+        elif menu_mode == "game over":            
             game_over_menu = menus.GameOverMenu(screen, clock, text_font, colour, game_won)
             game_over_menu.setup()
             while game_over_menu.option == None:
@@ -54,7 +48,6 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score, game_won):
                     main()
 
                 elif game_over_menu.option == "quit game":
-                    if DEBUG: print("quit game")
                     pygame.quit()
                     quit()
 
@@ -62,7 +55,7 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score, game_won):
                     print(score)
 
 # ---------------------------------------- Settings menu ----------------------------------------- #
-        elif menu_mode == str("settings"):
+        elif menu_mode == "settings":
             settings_menu = menus.SettingsMenu(screen, clock, text_font, colour)
             settings_menu.setup()
 
@@ -71,22 +64,21 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score, game_won):
                 settings_menu.is_clicked()
 
                 if settings_menu.option == "difficulty":
-                    menu_mode = str("difficulty")
+                    menu_mode = "difficulty"
                     break
                     
                 elif settings_menu.option == "snake colour":
-                    menu_mode = str("snake colour")
+                    menu_mode = "snake colour"
 
                 elif settings_menu.option == "fruit type":
-                    menu_mode = str("fruit type")
+                    menu_mode = "fruit type"
 
                 elif settings_menu.option == "back":
-                    if DEBUG: print("start menu")
-                    menu_mode = str("start")
+                    menu_mode = "start"
                     break
 
 # ---------------------------------- Options from settings menu ---------------------------------- #
-        elif menu_mode == str("snake colour"):
+        elif menu_mode == "snake colour":
             snake_colour_menu = menus.SnakeColourMenu(screen, clock, text_font, colour)
             snake_colour_menu.setup()
 
@@ -96,27 +88,21 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score, game_won):
 
                 if snake_colour_menu.option == "green":
                     settings_options["snake_colour"] = (0, 255, 0)
-                    if DEBUG: print(settings_options["snake_colour"])
                     
                 elif snake_colour_menu.option == "white":
                     settings_options["snake_colour"] = (255, 255, 255)
-                    if DEBUG: print(settings_options["snake_colour"])
                     
                 elif snake_colour_menu.option == "pink":
                     settings_options["snake_colour"] = (255, 105, 180)
-                    if DEBUG: print(settings_options["snake_colour"])
 
                 elif snake_colour_menu.option == "blue":
                     settings_options["snake_colour"] = (0, 0, 255)
-                    if DEBUG: print(settings_options["snake_colour"])
-
 
                 elif snake_colour_menu.option == "back":
-                    menu_mode = str("start")
-                    if DEBUG: print("menu mode set to start")
+                    menu_mode = "start"
                     break
 
-        elif menu_mode == str("difficulty"):
+        elif menu_mode == "difficulty":
             difficulty_menu = menus.DifficultyMenu(screen, clock, text_font, colour)
             difficulty_menu.setup()
 
@@ -125,23 +111,22 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score, game_won):
                 difficulty_menu.is_clicked()
 
                 if difficulty_menu.option == "easy":
-                    settings_options["game_difficulty"] = str("easy")
+                    settings_options["game_difficulty"] = "easy"
                     
                 elif difficulty_menu.option == "normal":
-                    settings_options["game_difficulty"] = str("normal")
+                    settings_options["game_difficulty"] = "normal"
                     
                 elif difficulty_menu.option == "hard":
-                    settings_options["game_difficulty"] = str("hard")
+                    settings_options["game_difficulty"] = "hard"
 
                 elif difficulty_menu.option == "very hard":
-                    settings_options["game_difficulty"] = str("very hard")
+                    settings_options["game_difficulty"] = "very hard"
 
                 elif difficulty_menu.option == "back":
-                    menu_mode = str("start")
-                    if DEBUG: print("menu mode set to start")
+                    menu_mode = "start"
                     break
 
-        elif menu_mode == str("fruit type"):
+        elif menu_mode == "fruit type":
             fruit_type_menu = menus.FruitTypeMenu(screen, clock, text_font, colour)
             fruit_type_menu.setup()
 
@@ -150,23 +135,22 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score, game_won):
                 fruit_type_menu.is_clicked()
 
                 if fruit_type_menu.option == "apple":
-                    settings_options["fruit_type"] = str("apple")
+                    settings_options["fruit_type"] = "apple"
                     
                 elif fruit_type_menu.option == "banana":
-                    settings_options["fruit_type"] = str("banana")
+                    settings_options["fruit_type"] = "banana"
                     
                 elif fruit_type_menu.option == "orange":
-                    settings_options["fruit_type"] = str("orange")
+                    settings_options["fruit_type"] = "orange"
 
                 elif fruit_type_menu.option == "blueberry":
-                    settings_options["fruit_type"] = str("blueberry")
+                    settings_options["fruit_type"] = "blueberry"
 
                 elif fruit_type_menu.option == "back":
-                    menu_mode = str("start")
-                    if DEBUG: print("menu mode set to start")
+                    menu_mode = "start"
                     break
 # ----------------------------------------- Credits menu ----------------------------------------- #
-        elif menu_mode == str("credits"):
+        elif menu_mode == "credits":
             credits_menu = menus.CreditsMenu(screen, clock, text_font, colour)
             credits_menu.setup()
 
@@ -175,8 +159,7 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score, game_won):
                 credits_menu.is_clicked()
 
                 if credits_menu.option == "back":
-                    if DEBUG: print("start menu")
-                    menu_mode = str("start")
+                    menu_mode = "start"
                     break
 
     return settings_options
@@ -209,7 +192,7 @@ def main():
     text_font = pygame.font.SysFont("Arial", 20)
 
 # ---------------------------- Starting menu and getting user options ---------------------------- #
-    menu_mode = str("start")
+    menu_mode = "start"
     settings_options = menu_handler(menu_mode, screen, clock, text_font, WHITE, score, False)
 
     game_difficulty = settings_options["game_difficulty"]
@@ -298,7 +281,6 @@ def main():
 
 # ---------------------------------------- Stage manager ----------------------------------------- #
         if stage_1:
-            if DEBUG: print("stage 1")
             fruit.draw()
             
             if fruit.is_eaten(snake.x, snake.y, snake.size):
@@ -316,7 +298,6 @@ def main():
                     burp_2.play()
 
         elif stage_2:
-            if DEBUG: print("stage 2")
             golden_apple.draw()
 
             if golden_apple.is_eaten(snake.x, snake.y, snake.size):
@@ -338,8 +319,6 @@ def main():
                 stage_4 = True
                 stage_3 = False
 
-            if DEBUG: print("stage 3")
-            
             poisonous_apple.draw()
             poisonous_apple.follow_snake(snake.x, snake.y)
 
@@ -348,12 +327,10 @@ def main():
                 snake.is_dead = True
 
         elif stage_4:
-            if DEBUG: print("stage 4")
 
             victory_fruit.draw()
 
             if victory_fruit.is_eaten(snake.x, snake.y, snake.size):
-                if DEBUG: print("you win")
                 snake.game_won = True
         
         elif stage_5:
@@ -372,7 +349,7 @@ def main():
 
 # ------------------------------------ End of main game loop ------------------------------------- #
     pygame.mixer.fadeout(1)
-    menu_mode = str("game over")
+    menu_mode = "game over"
     menu_handler(menu_mode, screen, clock, text_font, WHITE, score, snake.game_won)
 
 if __name__ == "__main__":
