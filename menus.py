@@ -120,7 +120,7 @@ class GameOverMenu(StartMenu):
 class SettingsMenu(StartMenu):
     def __init__(self, screen, clock, font, colour):
         StartMenu.__init__(self, screen, clock, font, colour)
-        self.button_command = ["difficulty", "button 2", "button 3", "back"]
+        self.button_command = ["difficulty", "snake colour", "fruit type", "back"]
         self.title = str("settings menu")
 
     def update(self):
@@ -146,12 +146,12 @@ class SettingsMenu(StartMenu):
         elif button_2.collidepoint((mousex, mousey)):
             if self.click:
                 self.option = self.button_command[1]
-                print("button 2 pressed")
+                print("snake colour")
                 
         elif button_3.collidepoint((mousex, mousey)):
             if self.click:
                 self.option = self.button_command[2]
-                print("button 3 pressed")
+                print("fruit type")
 
         elif button_4.collidepoint((mousex, mousey)):
             if self.click:
@@ -265,3 +265,18 @@ class DifficultyMenu(StartMenu):
         self.draw_text(f"{self.button_command[4]}", button_5_xy[0] + 75, button_5_xy[1] + 35)
 
         pygame.display.update()
+
+
+class SnakeColourMenu(DifficultyMenu):
+    def __init__(self, screen, clock, font, colour):
+        DifficultyMenu.__init__(self, screen, clock, font, colour)
+        self.button_command = ["green", "white", "pink", "blue", "back"]
+        self.title = str("snake colour menu")
+
+
+class FruitTypeMenu(DifficultyMenu):
+    def __init__(self, screen, clock, font, colour):
+        DifficultyMenu.__init__(self, screen, clock, font, colour)
+        self.button_command = ["apple", "banana", "orange", "blueberry", "back"]
+        self.title = str("snake colour menu")
+

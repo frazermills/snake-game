@@ -1,7 +1,7 @@
 import pygame, random
 DEBUG = True
 
-class Apple:
+class Fruit:
     def __init__(self, screen, colour):
         self.screen = screen
         self.colour = colour
@@ -28,15 +28,15 @@ class Apple:
         return eaten
 
 
-class GoldenApple(Apple):
+class GoldenApple(Fruit):
     def __init__(self, screen, colour):
-        Apple.__init__(self, screen, colour)
+        Fruit.__init__(self, screen, colour)
         self.size = 60
 
 
-class PoisonousApple(Apple):
+class PoisonousApple(Fruit):
     def __init__(self, screen, colour):
-        Apple.__init__(self, screen, colour)
+        Fruit.__init__(self, screen, colour)
         self.size = 45
 
     def follow_snake(self, snakex, snakey):

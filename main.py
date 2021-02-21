@@ -2,12 +2,13 @@ import pygame, random, menus, food
 from snake import Snake
 from particle_system import ParticleSystem
 
-DEBUG = False
+DEBUG = True
 
 def menu_handler(menu_mode, screen, clock, text_font, colour, score):
     settings_options = {
         "game_difficulty": "easy",
-        "snake_colour": (0, 255, 0)
+        "snake_colour": (0, 255, 0),
+        "fruit_type": "apple"
     }
 
     in_menu = True
@@ -36,7 +37,8 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
 
                 elif start_menu.option == "quit game":
                     if DEBUG: print("quit game")
-                    end_game(score)
+                    pygame.quit()
+                    quit()
                     
         if menu_mode == str("game over"):            
             game_over_menu = menus.GameOverMenu(screen, clock, text_font, colour)
@@ -63,13 +65,13 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
 
                 if settings_menu.option == "difficulty":
                     menu_mode = str("difficulty")
-                    menu_handler(menu_mode, screen, clock, text_font, colour, score)
+                    break
                     
-                elif settings_menu.option == "button 2":
-                    pass
+                elif settings_menu.option == "snake colour":
+                    menu_mode = str("snake colour")
 
-                elif settings_menu.option == "button 3":
-                    pass
+                elif settings_menu.option == "fruit type":
+                    menu_mode = str("fruit type")
 
                 elif settings_menu.option == "back":
                     if DEBUG: print("start menu")
@@ -87,6 +89,36 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
                 if credits_menu.option == "back":
                     if DEBUG: print("start menu")
                     menu_mode = str("start")
+                    break
+
+        elif menu_mode == str("snake colour"):
+            snake_colour_menu = menus.SnakeColourMenu(screen, clock, text_font, colour)
+            snake_colour_menu.setup()
+
+            while snake_colour_menu.option == None:
+                snake_colour_menu.update()
+                snake_colour_menu.is_clicked()
+
+                if snake_colour_menu.option == "green":
+                    settings_options["snake_colour"] = (0, 255, 0)
+                    if DEBUG: print(settings_options["snake_colour"])
+                    
+                elif snake_colour_menu.option == "white":
+                    settings_options["snake_colour"] = (255, 255, 255)
+                    if DEBUG: print(settings_options["snake_colour"])
+                    
+                elif snake_colour_menu.option == "pink":
+                    settings_options["snake_colour"] = (255, 105, 180)
+                    if DEBUG: print(settings_options["snake_colour"])
+
+                elif snake_colour_menu.option == "blue":
+                    settings_options["snake_colour"] = (0, 0, 255)
+                    if DEBUG: print(settings_options["snake_colour"])
+
+
+                elif snake_colour_menu.option == "back":
+                    menu_mode = str("start")
+                    if DEBUG: print("menu mode set to start")
                     break
 
         elif menu_mode == str("difficulty"):
@@ -109,8 +141,32 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score):
                 elif difficulty_menu.option == "very hard":
                     settings_options["game_difficulty"] = str("very hard")
 
-
                 elif difficulty_menu.option == "back":
+                    menu_mode = str("start")
+                    if DEBUG: print("menu mode set to start")
+                    break
+
+        elif menu_mode == str("fruit type"):
+            fruit_type_menu = menus.FruitTypeMenu(screen, clock, text_font, colour)
+            fruit_type_menu.setup()
+
+            while fruit_type_menu.option == None:
+                fruit_type_menu.update()
+                fruit_type_menu.is_clicked()
+
+                if fruit_type_menu.option == "apple":
+                    settings_options["fruit_type"] = str("apple")
+                    
+                elif fruit_type_menu.option == "banana":
+                    settings_options["fruit_type"] = str("banana")
+                    
+                elif fruit_type_menu.option == "orange":
+                    settings_options["fruit_type"] = str("orange")
+
+                elif fruit_type_menu.option == "blueberry":
+                    settings_options["fruit_type"] = str("blueberry")
+
+                elif fruit_type_menu.option == "back":
                     menu_mode = str("start")
                     if DEBUG: print("menu mode set to start")
                     break
@@ -125,8 +181,11 @@ def main():
     BLACK = (0, 0, 0)
     GREEN = (0, 255, 0)
     RED = (255, 0, 0)
+    BLUE = (0, 0, 255)
     GOLD = (255, 215, 0)
     PURPLE = (153,50,204)
+    YELLOW = (255,255,0)
+    ORANGE = (255,69,0)
     fps = 25
     score = 0
     
@@ -142,9 +201,17 @@ def main():
 
     game_difficulty = settings_options["game_difficulty"]
     snake_colour = settings_options["snake_colour"]
+    fruit_type = settings_options["fruit_type"]
 
-    snake = Snake(screen, GREEN, game_difficulty)
-    apple = food.Apple(screen, RED)
+    fruit_colour = {
+        "apple": RED,
+        "banana": YELLOW,
+        "orange": ORANGE,
+        "blueberry": BLUE
+    }
+    
+    snake = Snake(screen, snake_colour, game_difficulty)
+    fruit = food.Fruit(screen, fruit_colour[fruit_type])
     golden_apple = food.GoldenApple(screen, GOLD)
     poisonous_apple = food.PoisonousApple(screen, PURPLE)
     particle_system = ParticleSystem(screen)
@@ -198,15 +265,15 @@ def main():
 
         if stage_1:
             if DEBUG: print("stage 1")
-            apple.draw()
+            fruit.draw()
             
-            if apple.is_eaten(snake.x, snake.y, snake.size):
+            if fruit.is_eaten(snake.x, snake.y, snake.size):
                 eat_food.play()
-                apple.update_xy()
+                fruit.update_xy()
                 snake.grow()
                 score += 1
                 trigger = True
-                particle_colour = apple.colour
+                particle_colour = fruit.colour
 
                 num = random.randrange(10)
                 if num == 9:
