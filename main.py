@@ -52,8 +52,19 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score, game_won, e
                     quit()
 
                 elif game_over_menu.option == "high score":
-                    print(elapsed_time)
+                    menu_mode = "high score"
 
+# --------------------------------- Options from game over menu ---------------------------------- #
+        elif menu_mode == "high score":
+            high_score_menu = menus.HighScoreMenu(screen, clock, text_font, colour, elapsed_time)
+            high_score_menu.setup()
+            while high_score_menu.option == None:
+                high_score_menu.update()
+                high_score_menu.is_clicked()
+                
+                if high_score_menu.option == "main menu":
+                    menu_mode = "start"
+                    
 # ---------------------------------------- Settings menu ----------------------------------------- #
         elif menu_mode == "settings":
             settings_menu = menus.SettingsMenu(screen, clock, text_font, colour)
@@ -234,7 +245,7 @@ def main():
     pygame.mixer.music.play(-1)
 
 # ---------------------------------------- Main game loop ---------------------------------------- #
-start_time = time.time()
+    start_time = time.time()
     while not snake.is_dead and not snake.game_won:
 
 # ---------------------------------------- Event handling ---------------------------------------- #
@@ -339,9 +350,11 @@ start_time = time.time()
             snake.is_dead = True
 
 # ------------------------------------- Outputting to screen ------------------------------------- #
+        elapsed_time = round((time.time() - start_time), 3)
         snake.move(snake.direction)
         particle_system.explode(trigger, snake.x, snake.y, particle_colour)
         screen.blit(text_font.render(f'score: {score}', True, WHITE), (10, 10))
+        screen.blit(text_font.render(f'time: {elapsed_time}', True, WHITE), (10, 30))
         
         trigger = False
 
@@ -349,7 +362,6 @@ start_time = time.time()
         clock.tick(fps)
 
 # ------------------------------------ End of main game loop ------------------------------------- #
-    elapsed_time = time.time() - start_time
     pygame.mixer.fadeout(1)
     menu_mode = "game over"
     menu_handler(menu_mode, screen, clock, text_font, WHITE, score, snake.game_won, elapsed_time)

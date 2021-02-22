@@ -1,4 +1,5 @@
 import pygame
+from modules.pygame_textinput import TextInput
 
 class StartMenu:
     def __init__(self, screen, clock, font, colour):
@@ -295,4 +296,47 @@ class FruitTypeMenu(DifficultyMenu):
         DifficultyMenu.__init__(self, screen, clock, font, colour)
         self.button_command = ["apple", "banana", "orange", "blueberry", "back"]
         self.title = "snake colour menu"
+
+
+class HighScoreMenu(StartMenu):
+    def __init__(self, screen, clock, font, colour, high_score):
+        DifficultyMenu.__init__(self, screen, clock, font, colour)
+        self.button_command = [f"your time: {high_score}", "main menu"]
+        self.title = "snake colour menu"
+        self.textinput = TextInput()
+        self.button_width = 170
+
+    def update(self):
+        mousex, mousey = pygame.mouse.get_pos()
+
+        high_score_xy = ((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2))
+        high_score = pygame.Rect(high_score_xy[0], high_score_xy[1], self.button_width, self.button_height)
+
+        button_1_xy = ((self.screen.get_width() // 2) - (self.button_width // 2), (self.screen.get_width() // 2) + 100)
+        button_1 = pygame.Rect(button_1_xy[0], button_1_xy[1], self.button_width, self.button_height)
+        
+
+        if high_score.collidepoint((mousex, mousey)):
+            if self.click:
+                self.option = self.button_command[0]
+
+        elif button_1.collidepoint((mousex, mousey)):
+            if self.click:
+                self.option = self.button_command[1]
+                
+        pygame.draw.rect(self.screen, (255, 0, 0), button_1)
+
+        pygame.draw.rect(self.screen, (255, 0, 0), high_score)
+
+        self.draw_text(f"{self.title}", self.screen.get_width() // 2, self.screen.get_height() // 4)
+        self.draw_text(f"{self.button_command[0]}", high_score_xy[0] + 85, high_score_xy[1] + 35)
+        self.draw_text(f"{self.button_command[1]}", button_1_xy[0] + 85, button_1_xy[1] + 35)
+
+        pygame.display.update()
+
+    def get_input(self):
+        events = pygame.event.get()
+        self.textinput.update(events)
+        username = self.textinput.get_text()
+        return username
 
