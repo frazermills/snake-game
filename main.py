@@ -3,7 +3,7 @@ from snake import Snake
 from particle_system import ParticleSystem
 
 # ---------------------------- Handles the menus from the menus module --------------------------- #
-def menu_handler(menu_mode, screen, clock, text_font, colour, score, game_won):
+def menu_handler(menu_mode, screen, clock, text_font, colour, score, game_won, elapsed_time=0):
     settings_options = {
         "game_difficulty": "easy",
         "snake_colour": (0, 255, 0),
@@ -52,7 +52,7 @@ def menu_handler(menu_mode, screen, clock, text_font, colour, score, game_won):
                     quit()
 
                 elif game_over_menu.option == "high score":
-                    print(score)
+                    print(elapsed_time)
 
 # ---------------------------------------- Settings menu ----------------------------------------- #
         elif menu_mode == "settings":
@@ -234,6 +234,7 @@ def main():
     pygame.mixer.music.play(-1)
 
 # ---------------------------------------- Main game loop ---------------------------------------- #
+start_time = time.time()
     while not snake.is_dead and not snake.game_won:
 
 # ---------------------------------------- Event handling ---------------------------------------- #
@@ -348,9 +349,10 @@ def main():
         clock.tick(fps)
 
 # ------------------------------------ End of main game loop ------------------------------------- #
+    elapsed_time = time.time() - start_time
     pygame.mixer.fadeout(1)
     menu_mode = "game over"
-    menu_handler(menu_mode, screen, clock, text_font, WHITE, score, snake.game_won)
+    menu_handler(menu_mode, screen, clock, text_font, WHITE, score, snake.game_won, elapsed_time)
 
 if __name__ == "__main__":
     main()
