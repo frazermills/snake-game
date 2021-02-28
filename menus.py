@@ -1,5 +1,4 @@
 import pygame
-from modules.pygame_textinput import TextInput
 
 class StartMenu:
     def __init__(self, screen, clock, font, colour):
